@@ -1,1 +1,1 @@
-# simple_web_site
+Simple web-site on spring framework
