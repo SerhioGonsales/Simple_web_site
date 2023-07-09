@@ -1,5 +1,23 @@
 <!DOCTYPE HTML>
 <body>
-<div> {{hello}}<div>
+<div>
+    <form method="post">
+        <input type="text" name="text" placeholder="type your message" />
+        <input type="text" name="tag" placeholder="tag" />
+        <button type="submit">add</button>
+    </form>
+</div>
+<div>
+    <form method="post" action="filter">
+        <input type="text" name="filter" placeholder="search by tag">
+        <button type="submit">search</button>
+    </form>
+</div>
+<div>List of messages</div>
+{{#message}}
+<div>
+    <span>{{text}}</span>
+    <i>{{tag}}</i>
+</div>
+{{/message}}
 </body>
-</html>
