@@ -1,6 +1,6 @@
 package com.lukushin.simple_web_site.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "message")
