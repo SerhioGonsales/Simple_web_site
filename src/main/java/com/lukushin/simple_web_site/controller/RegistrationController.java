@@ -1,6 +1,6 @@
 package com.lukushin.simple_web_site.controller;
 
-import com.lukushin.simple_web_site.entity.MyUser;
+import com.lukushin.simple_web_site.entity.User;
 import com.lukushin.simple_web_site.enums.Role;
 import com.lukushin.simple_web_site.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +23,10 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(MyUser user, Map<String, Object> model){
-        MyUser userFromDb = userRepository.findByUserName(user.getUserName());
+    public String addUser(User user, Map<String, Object> model){
+        User userFromDb = userRepository.findByUserName(user.getUserName());
         if(userFromDb != null){
-            model.put("message", "User exist!");
+            model.put("message", "Such a user already exists!");
             return "registration";
         }
 

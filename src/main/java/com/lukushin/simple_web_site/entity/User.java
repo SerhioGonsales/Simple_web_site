@@ -1,36 +1,68 @@
 package com.lukushin.simple_web_site.entity;
 
 import com.lukushin.simple_web_site.enums.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class MyUser {
-
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "username")
+    @Column(name = "user_name")
     private String userName;
     private String password;
-    @Column(name = "enabled")
+    @Column(name = "active")
     private boolean active;
-
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> role;
 
-    public MyUser() {
+    public User() {
     }
 
-    public MyUser(String userName, String password, boolean active, Set<Role> role) {
+    public User(String userName, String password, boolean active, Set<Role> role) {
         this.userName = userName;
         this.password = password;
         this.active = active;
         this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRole();
+    }
+
+    @Override
+    public String getUsername() {
+        return getUserName();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isActive();
     }
 
     public Long getId() {
@@ -72,4 +104,6 @@ public class MyUser {
     public void setRole(Set<Role> role) {
         this.role = role;
     }
+
+
 }
