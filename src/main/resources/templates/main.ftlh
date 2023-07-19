@@ -6,9 +6,10 @@
         <span><a href="/user">Редактор пользователей</a></span>
     </div>
     <div>
-        <form method="post" action="/main">
+        <form method="post" action="/main" enctype="multipart/form-data">
             <input type="text" name="text" placeholder="type your message" />
             <input type="text" name="tag" placeholder="tag" />
+            <input type="file" name="file">
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <button type="submit">добавить</button>
         </form>
@@ -23,6 +24,11 @@
             <span>${message.text}</span>
             <i>${message.tag}</i>
             <strong>${message.authorName}</strong>
+            <div>
+                <#if message.filename??>
+                    <img src="/img/${message.filename}">
+                </#if>
+            </div>
         </div>
         <#else>
         Нет сообщений

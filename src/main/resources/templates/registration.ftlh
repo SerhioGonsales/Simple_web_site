@@ -3,6 +3,6 @@
 
 <@c.page>
     Добавить нового пользователя
-<#--    ${message}-->
-    <@l.login "/registration"/>
+    <div>${message!}</div>
+    <@l.login "/registration" "userName"/>
 </@c.page>
