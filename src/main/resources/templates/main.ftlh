@@ -3,6 +3,7 @@
 <@c.page>
     <div>
         <@l.logout/>
+        <span><a href="/user">Редактор пользователей</a></span>
     </div>
     <div>
         <form method="post" action="/main">
@@ -13,7 +14,7 @@
         </form>
     </div>
     <form method="get" action="/main">
-        <input type="text" name="filter" />
+        <input type="text" name="filter" value="${filter!}" />
         <button type="submit">искать</button>
     </form>
     <div><strong>Список сообщений</strong></div>

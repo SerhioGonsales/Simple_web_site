@@ -5,11 +5,11 @@ import com.lukushin.simple_web_site.enums.Role;
 import com.lukushin.simple_web_site.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.Collections;
-import java.util.Map;
 
 @Controller
 public class RegistrationController {
@@ -23,10 +23,10 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Map<String, Object> model){
+    public String addUser(User user, Model model){
         User userFromDb = userRepository.findByUserName(user.getUserName());
         if(userFromDb != null){
-            model.put("message", "Such a user already exists!");
+            model.addAttribute("message", "Such a user already exists!");
             return "registration";
         }
 

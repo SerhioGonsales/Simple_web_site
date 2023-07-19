@@ -3,6 +3,7 @@ package com.lukushin.simple_web_site.controller;
 import com.lukushin.simple_web_site.entity.Message;
 import com.lukushin.simple_web_site.entity.User;
 import com.lukushin.simple_web_site.repository.MessageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,16 +12,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class MainController {
 
-    private final MessageRepository messageRepository;
-
-    public MainController(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
-    }
+    @Autowired
+    private MessageRepository messageRepository;
 
     @GetMapping("/")
     public String greeting(){
