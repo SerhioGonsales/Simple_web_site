@@ -1,36 +1,52 @@
 <#import "parts/common.ftlh" as c>
-<#import "parts/login.ftlh" as l>
+
 <@c.page>
-    <div>
-        <@l.logout/>
-        <span><a href="/user">Редактор пользователей</a></span>
-    </div>
-    <div>
-        <form method="post" action="/main" enctype="multipart/form-data">
-            <input type="text" name="text" placeholder="type your message" />
-            <input type="text" name="tag" placeholder="tag" />
-            <input type="file" name="file">
-            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-            <button type="submit">добавить</button>
-        </form>
-    </div>
-    <form method="get" action="/main">
-        <input type="text" name="filter" value="${filter!}" />
-        <button type="submit">искать</button>
-    </form>
-    <div><strong>Список сообщений</strong></div>
-    <#list messages as message>
-        <div>
-            <span>${message.text}</span>
-            <i>${message.tag}</i>
-            <strong>${message.authorName}</strong>
-            <div>
-                <#if message.filename??>
-                    <img src="/img/${message.filename}">
-                </#if>
-            </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <form method="get" action="/main" class="form-inline">
+                <input class="form-control" type="text" name="filter" value="${filter!}" placeholder="Поиск по тэгам" />
+                <button type="submit" class="btn btn-primary ml-2">искать</button>
+            </form>
         </div>
+    </div>
+    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Добавьте ваше сообщение
+    </a>
+    <div class="collapse" id="collapseExample">
+            <form method="post" action="/main" enctype="multipart/form-data">
+                <div>
+                    <input class="form-control mt-2 mb-2" type="text" name="text" placeholder="текст сообщения" />
+                </div>
+                <div>
+                    <input class="form-control mb-2" type="text" name="tag" placeholder="тэг" />
+                </div>
+                <div>
+                    <input type="file" name="file">
+                </div>
+                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary mt-2">добавить</button>
+                </div>
+            </form>
+    </div>
+    <div class="card-columns">
+        <#list messages as message>
+            <div class="card my-2">
+                <#if message.filename??>
+                    <img class="card-img-top" src="/img/${message.filename}">
+                </#if>
+                <div class="m-2">
+                    <span>${message.text}</span>
+                </div>
+                <div class="m-2">
+                    <i>${message.tag}</i>
+                </div>
+                <div class="card-footer text-muted">
+                    <strong>${message.authorName}</strong>
+                </div>
+            </div>
         <#else>
-        Нет сообщений
-    </#list>
+            Нет сообщений
+        </#list>
+    </div>
 </@c.page>

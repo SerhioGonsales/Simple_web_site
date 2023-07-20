@@ -36,7 +36,7 @@ public class MainController {
     public String main(@RequestParam(required = false) String filter, Model model){
         List<Message> messages;
         if(filter != null && !filter.isEmpty()){
-            messages = messageRepository.findByTag(filter);
+            messages = messageRepository.findByTagContains(filter);
         } else {
             messages = messageRepository.findAll();
         }
