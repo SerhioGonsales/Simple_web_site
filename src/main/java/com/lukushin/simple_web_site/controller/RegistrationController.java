@@ -28,7 +28,8 @@ public class RegistrationController {
     public String addUser(User user, Model model){
 
         if(!userService.saveUser(user)){
-            model.addAttribute("message", "Такой пользователь уже существует!");
+            model.addAttribute("message",
+                    "Такой пользователь уже существует!");
             return "registration";
         }
         model.addAttribute("message",
