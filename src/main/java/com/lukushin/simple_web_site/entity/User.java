@@ -20,6 +20,8 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "active")
     private boolean active;
+    private String mail;
+    private String activationCode;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -109,5 +111,19 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public String getMail() {
+        return mail;
+    }
 
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
 }

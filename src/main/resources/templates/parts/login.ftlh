@@ -9,9 +9,17 @@
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Password : </label>
             <div class="col-sm-6">
-                <input class="form-control" type="text" name="password" placeholder="password"/>
+                <input class="form-control" type="password" name="password" placeholder="password"/>
             </div>
         </div>
+        <#if isRegisterForm>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label"> Email : </label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="email" name="mail" placeholder="some@email.com"/>
+                </div>
+            </div>
+        </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <#if !isRegisterForm><div><a href="/registration">Добавить нового пользователя</a></div></#if>
         <div><button type="submit" class="btn btn-primary"><#if isRegisterForm>Create<#else>Login</#if></button></div>
