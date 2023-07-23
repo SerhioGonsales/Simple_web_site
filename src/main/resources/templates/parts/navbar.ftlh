@@ -12,11 +12,16 @@
                 <a class="nav-link" href="/">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/main">Messages</a>
+                <a class="nav-link" href="/main">Сообщения</a>
             </li>
+            <#if user??>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/profile">Профиль</a>
+                </li>
+            </#if>
             <#if isAdmin>
                 <li class="nav-item">
-                    <a class="nav-link" href="/user">User list</a>
+                    <a class="nav-link" href="/user">Пользователи</a>
                 </li>
             </#if>
         </ul>

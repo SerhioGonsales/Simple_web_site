@@ -46,7 +46,7 @@ public class MainController {
     }
 
     @PostMapping("/main")
-    public String add(
+    public String addMessage(
             @RequestParam ("file") MultipartFile file,
             @AuthenticationPrincipal User user,
             @RequestParam String text,
