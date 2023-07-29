@@ -12,22 +12,39 @@
     <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
         Добавьте ваше сообщение
     </a>
-    <div class="collapse" id="collapseExample">
-            <form method="post" action="/main" enctype="multipart/form-data">
-                <div>
-                    <input class="form-control mt-2 mb-2" type="text" name="text" placeholder="текст сообщения" />
-                </div>
-                <div>
-                    <input class="form-control mb-2" type="text" name="tag" placeholder="тэг" />
-                </div>
-                <div>
-                    <input type="file" name="file">
-                </div>
-                <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary mt-2">добавить</button>
-                </div>
-            </form>
+    <div class="collapse <#if message??>show</#if> " id="collapseExample">
+        <form method="post" action="/main" enctype="multipart/form-data">
+            <div>
+                <input class="form-control <#if textError??>is-invalid</#if> mt-2 mb-2"
+                       value="<#if message??>${message.text}</#if>"
+                       type="text"
+                       name="text"
+                       placeholder="текс сообщения"/>
+                <#if textError??>
+                    <div class="invalid-feedback">
+                        ${textError}
+                    </div>
+                </#if>
+            </div>
+            <div>
+                <input class="form-control <#if tagError??>is-invalid</#if> mt-2 mb-2"
+                       type="text"
+                       name="tag"
+                       placeholder="тэг для поиска"/>
+                <#if tagError??>
+                    <div class="invalid-feedback">
+                        ${tagError}
+                    </div>
+                </#if>
+            </div>
+            <div>
+                <input type="file" name="file">
+            </div>
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary mt-2">добавить</button>
+            </div>
+        </form>
     </div>
     <div class="card-columns">
         <#list messages as message>

@@ -3,7 +3,7 @@
 
 <@c.page>
     <div class="mb-3"><h5>Профиль пользователя <i>${name}</i></h5></div>
-    <form method="post">
+    <form action="/user/profile" method="post">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Password : </label>
             <div class="col-sm-6">

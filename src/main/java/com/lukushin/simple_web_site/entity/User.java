@@ -5,6 +5,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 import java.util.Collection;
 import java.util.Set;
@@ -16,10 +18,18 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "username")
+    //TODO из-за валидации хибер не сохраняет изменения внесенные через страницу профиля юзера и админку
+    @NotBlank(message = "Поле name не может быть пустым")
     private String userName;
+    @NotBlank(message = "Поле password не может быть пустым")
     private String password;
+    @Transient
+    @NotBlank(message = "Введите пароль повторно")
+    private String password2;
     @Column(name = "active")
     private boolean active;
+    @Email(message = "Проверьте корректность введенного email")
+    @NotBlank(message = "Поле email не может быть пустым")
     private String mail;
     private String activationCode;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -125,5 +135,13 @@ public class User implements UserDetails {
 
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
+    }
+
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password2) {
+        this.password2 = password2;
     }
 }

@@ -2,21 +2,15 @@ package com.lukushin.simple_web_site.controller;
 
 import com.lukushin.simple_web_site.entity.User;
 import com.lukushin.simple_web_site.enums.Role;
-import com.lukushin.simple_web_site.repository.UserRepository;
 import com.lukushin.simple_web_site.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")

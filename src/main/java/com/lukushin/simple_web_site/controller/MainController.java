@@ -8,14 +8,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -49,23 +52,33 @@ public class MainController {
     public String addMessage(
             @RequestParam ("file") MultipartFile file,
             @AuthenticationPrincipal User user,
-            @RequestParam String text,
-            @RequestParam String tag, Model model) throws IOException {
-        Message message = new Message(text, tag, user);
+            @Valid Message message,
+            BindingResult bindingResult,
+            Model model) throws IOException {
 
-        if(file!=null){
-            File uploadDir = new File(uploadPath);
-            if(!uploadDir.exists()){
-                uploadDir.mkdir();
+        message.setAuthor(user);
+
+        if(bindingResult.hasErrors()){
+            Map<String, String> errorMap = ControllerUtils.getErrorsMap(bindingResult);
+            model.mergeAttributes(errorMap);
+            model.addAttribute("message", message);
+//            return "/main";
+        } else{
+            //TODO даже если нет прикрепленного файла к сообщению создается имя файла
+            // и потом на странице отображается "битая" картинка
+            if(file!=null){
+                File uploadDir = new File(uploadPath);
+                if(!uploadDir.exists()){
+                    uploadDir.mkdir();
+                }
+                String uuidFilename = UUID.randomUUID().toString();
+                String resultFilename = uuidFilename + "." + file.getOriginalFilename();
+
+                file.transferTo(new File(uploadPath + "/" + resultFilename));
+                message.setFilename(resultFilename);
             }
-            String uuidFilename = UUID.randomUUID().toString();
-            String resultFilename = uuidFilename + "." + file.getOriginalFilename();
-
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
-            message.setFilename(resultFilename);
+            messageRepository.save(message);
         }
-
-        messageRepository.save(message);
         Iterable<Message> messageList = messageRepository.findAll();
         model.addAttribute("messages", messageList);
         return "main";

@@ -1,6 +1,9 @@
 package com.lukushin.simple_web_site.entity;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "message")
@@ -8,7 +11,10 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Введите сообщение")
+    @Length(max = 2048, message = "Превышен допустимый размер сообщения")
     private String text;
+    @NotBlank(message = "Укажите тэг для поиска")
     private String tag;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")

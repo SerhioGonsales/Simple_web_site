@@ -7,10 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.Valid;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("")
@@ -27,17 +33,33 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(User user, Model model){
+    public String addUser(@Valid User user,
+                          BindingResult bindingResult,
+                          Model model){
 
-        if(!userService.addUser(user)){
-            model.addAttribute("message",
-                    "Такой пользователь уже существует!");
-            return "registration";
+        if(bindingResult.hasErrors()){
+            Map<String, String> errorMap = ControllerUtils.getErrorsMap(bindingResult);
+            model.mergeAttributes(errorMap);
+            model.addAttribute("user", user);
+            return "/registration";
         }
-        model.addAttribute("message",
-                "Вам на почту выслано письмо для подтверждения регистрации.");
 
-        return "login";
+        if((user.getPassword()!=null
+                && user.getPassword2()!=null
+                && user.getPassword().equals(user.getPassword2()))){
+
+            // TODO проверить view на отображение userError
+            if(!userService.addUser(user)){
+                model.addAttribute("userError",
+                        "Такой пользователь уже существует!");
+                return "/registration";
+            }
+            model.addAttribute("message",
+                    "Вам на почту выслано письмо для подтверждения регистрации.");
+            return "/login";
+        }
+        model.addAttribute("password2Error", "Пароли не совпадают");
+        return "/registration";
     }
 
     @GetMapping("/activation/{code}")
@@ -49,6 +71,6 @@ public class RegistrationController {
         }
         model.addAttribute("message",
                 "Ваша учетная запись успешно активирована!");
-        return "login";
+        return "/login";
     }
 }
