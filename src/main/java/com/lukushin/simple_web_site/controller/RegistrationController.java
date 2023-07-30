@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -33,9 +31,17 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@Valid User user,
-                          BindingResult bindingResult,
-                          Model model){
+    public String addUser(
+            @RequestParam("password2") String passwordConfirmation,
+            @Valid User user,
+            BindingResult bindingResult,
+            Model model
+    ){
+        boolean confirmEmpty = StringUtils.isEmpty(passwordConfirmation);
+
+        if(confirmEmpty){
+            model.addAttribute("password2Error", "Введите пароль еще раз");
+        }
 
         if(bindingResult.hasErrors()){
             Map<String, String> errorMap = ControllerUtils.getErrorsMap(bindingResult);
@@ -44,9 +50,8 @@ public class RegistrationController {
             return "/registration";
         }
 
-        if((user.getPassword()!=null
-                && user.getPassword2()!=null
-                && user.getPassword().equals(user.getPassword2()))){
+        if((user.getPassword() != null
+                && user.getPassword().equals(passwordConfirmation))){
 
             // TODO проверить view на отображение userError
             if(!userService.addUser(user)){
