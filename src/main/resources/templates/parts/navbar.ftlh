@@ -18,6 +18,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/user/profile">Профиль</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/messages/${currentUserId}">Ваши сообщения</a>
+                </li>
             </#if>
             <#if isAdmin>
                 <li class="nav-item">
