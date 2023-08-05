@@ -39,12 +39,20 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String main(@RequestParam(required = false) String filter, Model model){
+    public String main(
+            @AuthenticationPrincipal User currentUser,
+            @RequestParam(required = false) String filter,
+            Model model){
         List<Message> messages;
         if(filter != null && !filter.isEmpty()){
             messages = messageRepository.findByTagContains(filter);
         } else {
             messages = messageRepository.findAll();
+        }
+        //TODO без этой проверки и добавления user в модель
+        //на главной странице отображается кнопка "вход" вместо "выход"
+        if(currentUser!=null){
+            model.addAttribute("user", currentUser);
         }
         model.addAttribute("messages", messages);
         model.addAttribute("filter", filter);
@@ -84,9 +92,13 @@ public class MainController {
             @RequestParam (required = false) Message message
     ){
         Set<Message> messages = user.getMessages();
+        model.addAttribute("userChannel", user);
+        model.addAttribute("subscriptionsCount", user.getSubscriptions().size());
+        model.addAttribute("subscribersCount", user.getSubscribers().size());
+        model.addAttribute("isCurrentUser", currentUser.equals(user));
+        model.addAttribute("isSubscriber", user.getSubscribers().contains(currentUser));
         model.addAttribute("messages", messages);
         model.addAttribute("message", message);
-        model.addAttribute("isCurrentUser", currentUser.equals(user));
         return "userMessages";
     }
 
@@ -114,6 +126,9 @@ public class MainController {
         return "redirect:/userMessages" + user;
     }
 
+
+
+    //TODO перенести в userService
     private void saveFile(MultipartFile file, Message message) throws IOException {
         if(file !=null){
             File uploadDir = new File(uploadPath);

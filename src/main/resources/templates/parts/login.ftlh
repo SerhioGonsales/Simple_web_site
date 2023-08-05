@@ -62,13 +62,13 @@
         </#if>
         <input type="hidden" name="_csrf" value="${_csrf.token}" />
         <#if !isRegisterForm><div><a href="/registration">Добавить нового пользователя</a></div></#if>
-        <div><button type="submit" class="btn btn-primary"><#if isRegisterForm>Добавить<#else>Login</#if></button></div>
+        <div><button type="submit" class="btn btn-primary"><#if isRegisterForm>Добавить<#else>Войти</#if></button></div>
     </form>
 </#macro>
 
 <#macro logout>
     <form action="/logout" method="post">
-        <button type="submit" class="btn btn-primary">Выйти</button>
+        <button type="submit" class="btn btn-primary"><#if user??>Выйти<#else>Войти</#if></button>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     </form>
 </#macro>
