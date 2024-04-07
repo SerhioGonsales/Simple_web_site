@@ -50,7 +50,7 @@ public class MainController {
             messages = messageRepository.findAll();
         }
         //TODO без этой проверки и добавления user в модель
-        //на главной странице отображается кнопка "вход" вместо "выход"
+        // на главной странице отображается кнопка "вход" вместо "выход"
         if(currentUser!=null){
             model.addAttribute("user", currentUser);
         }

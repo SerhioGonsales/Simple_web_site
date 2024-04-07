@@ -4,17 +4,14 @@ import com.lukushin.simple_web_site.entity.User;
 import com.lukushin.simple_web_site.repository.UserRepository;
 import com.lukushin.simple_web_site.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("")
